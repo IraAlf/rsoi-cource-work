@@ -1,0 +1,56 @@
+frontend:
+  service:
+    port: 3000
+    image:
+      name: fairay/rsoi-lab5-frontend
+      version: latest
+    ingress:
+      enabled: true
+      path: /
+      pathType: Prefix
+statistics:
+  service:
+    port: 8030
+    image:
+      name: fairay/rsoi-lab5-statistics
+      version: latest
+identity-provider:
+  service:
+    port: 8040
+    image:
+      name: fairay/rsoi-lab5-identity-provider
+      version: latest
+privileges:
+  service:
+    port: 8050
+    image:
+      name: fairay/rsoi-lab5-privileges
+      version: latest
+    database:
+      name: privileges
+flights:
+  service:
+    port: 8060
+    image:
+      name: fairay/rsoi-lab5-flights
+      version: latest
+    database:
+      name: flights
+tickets:
+  service:
+    port: 8070
+    image:
+      name: fairay/rsoi-lab5-tickets
+      version: latest
+    database:
+      name: tickets
+gateway:
+  service:
+    port: 8080
+    image:
+      name: fairay/rsoi-lab5-gateway
+      version: latest
+    ingress:
+      enabled: true
+      path: /api/
+      pathType: Prefix

@@ -1,0 +1,22 @@
+service:
+  port:
+  image:
+    name:
+    version:
+  ingress:
+    enabled:
+    path:
+    pathType:
+  database:
+    name:
+    host: postgres-service
+    port: 5432
+    username: program
+    password: test
+  resources:
+    requests:
+      cpu: 200m
+      memory: 512Mi
+    limits:
+      cpu: 200m
+      memory: 512Mi

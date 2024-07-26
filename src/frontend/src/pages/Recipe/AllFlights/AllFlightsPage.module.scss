@@ -1,0 +1,6 @@
+@import "/src/styles/variables.scss";
+
+.main_box {
+    @include main-box();
+    justify-content: flex-start;
+}

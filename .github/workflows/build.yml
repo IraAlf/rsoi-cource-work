@@ -1,0 +1,114 @@
+name: Build Project
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+jobs:
+  build:
+    name: Autograding
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - uses: docker/setup-buildx-action@v2
+
+      - name: Create flags
+        id: flags
+        run: |
+          RELEASE="false"
+          echo "::set-output name=RELEASE::$RELEASE"
+
+      - name: Build gateway
+        if: ${{ steps.flags.outputs.RELEASE == 'true' }}
+        run: cd src/gateway && go get -d ./... && go build ./...
+      - name: Build flights
+        if: ${{ steps.flags.outputs.RELEASE == 'true' }}
+        run: cd src/flights && go get -d ./... && go build ./...
+      - name: Build tickets
+        if: ${{ steps.flags.outputs.RELEASE == 'true' }}
+        run: cd src/tickets && go get -d ./... && go build ./...
+      - name: Build privileges
+        if: ${{ steps.flags.outputs.RELEASE == 'true' }}
+        run: cd src/privileges && go get -d ./... && go build ./...
+      - name: Build identity provider
+        if: ${{ steps.flags.outputs.RELEASE == 'true' }}
+        run: cd src/identity-provider && go get -d ./... && go build ./...
+
+      - name: Docker hub auth
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_LOGIN }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+      - name: Publish gateway image
+        run: |
+          cd ./src/gateway
+          docker build --no-cache -t fairay/rsoi-lab5-gateway .
+          docker push fairay/rsoi-lab5-gateway:latest
+      - name: Publish flights image
+        run: |
+          cd ./src/flights
+          docker build --no-cache -t fairay/rsoi-lab5-flights .
+          docker push fairay/rsoi-lab5-flights:latest
+      - name: Publish tickets image
+        run: |
+          cd ./src/tickets
+          docker build --no-cache -t fairay/rsoi-lab5-tickets .
+          docker push fairay/rsoi-lab5-tickets:latest
+      - name: Publish privileges image
+        run: |
+          cd ./src/privileges
+          docker build --no-cache -t fairay/rsoi-lab5-privileges .
+          docker push fairay/rsoi-lab5-privileges:latest
+      - name: Publish identity-provider image
+        run: |
+          cd ./src/identity-provider
+          docker build --no-cache -t fairay/rsoi-lab5-identity-provider \
+            --build-arg OKTA_CLIENT_SECRET="${{secrets.OKTA_CLIENT_SECRET}}" \
+            --build-arg OKTA_SSWS_TOKEN="${{secrets.OKTA_SSWS_TOKEN}}" \
+            .
+          docker push fairay/rsoi-lab5-identity-provider:latest
+
+      - name: Setup Kuber config
+        run: |
+          kubectl config set-cluster rsoi-lab4 --server="${{secrets.K8S_HOST}}" --insecure-skip-tls-verify=true
+          kubectl config set-credentials github-actions --token="${{secrets.K8S_TOKEN}}"
+          kubectl config set-context default --cluster=rsoi-lab4 --user=github-actions
+          kubectl config use-context default
+
+      - name: Helm deploy
+        run: |
+          cd k8s && helm upgrade --install services ./services-chart
+          sleep 20
+
+      # - name: Run API Tests
+      #   uses: matt-ball/newman-action@master
+      #   with:
+      #     collection: v1/postman/collection.json
+      #     environment: v1/postman/environment.json
+      #     delayRequest: 100
+      #     reporters: '[ "cli" ]'
+
+      # - uses: education/autograding@v1
+      #   id: autograder
+      #   continue-on-error: true
+
+#      - name: GitHub auto grader mark
+#        uses: Romanow/google-sheet-autograder-marker@v1.0
+#        with:
+#          google_token: ${{secrets.GOOGLE_API_KEY}}
+#          sheet_id: ""
+#          homework_number: 1
+#          user_column: 'D'
+#          column_offset: 'F'
+#          mark: "'+"
+
+#      - name: Stop containers
+#        if: always()
+#        continue-on-error: true
+#        run: docker compose down -v

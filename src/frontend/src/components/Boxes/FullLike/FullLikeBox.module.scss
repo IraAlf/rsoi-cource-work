@@ -1,0 +1,22 @@
+@import "/src/styles/variables.scss";
+
+.likes_box {
+    @include round-box();
+    width: 120px;
+    height: 30px;
+    border-color: $colorAccent1;
+    align-items: center;
+    padding-left: 7px;
+    padding-right: 7px;
+    column-gap: 12px;
+
+    >p {
+        @include text-body;
+        color: $colorText;
+    }
+
+    >svg {
+        margin-top: auto;
+        margin-bottom: auto;
+    }
+}

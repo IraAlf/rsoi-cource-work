@@ -1,0 +1,87 @@
+@import "/src/styles/variables.scss";
+
+.main_div {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+}
+
+.date_form {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-around;
+
+    >div {
+        display: flex;
+        flex-direction: row;
+    }
+
+    button {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+}
+
+.stats_div {
+    display: flex;
+    flex-direction: column;
+    row-gap: 30px;
+    margin-top: 25px;
+
+    h2 {
+        @include text-subtitle();
+        color: $colorTitle;
+        text-align: center;
+    }
+}
+
+.requests_div {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.table {
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+
+.table_row {
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    border-bottom-color: blue;
+}
+
+.table_row:last-child {
+    border-bottom: none;
+}
+
+.table_row:first-child {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.table_row:last-child {
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.table_buttons {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+
+    button {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+}
+
+.request_subtitle {
+    @include text-subtitle();
+    color: $colorTitle;
+    text-align: center;
+}

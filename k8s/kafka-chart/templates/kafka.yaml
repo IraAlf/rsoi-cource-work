@@ -1,0 +1,51 @@
+# templates/kafka.yaml
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-kafka
+  labels:
+    app: kafka
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kafka
+  template:
+    metadata:
+      labels:
+        app: kafka
+    spec:
+      containers:
+        - name: kafka
+          image: {{ .Values.kafka.image }}
+          ports:
+            - containerPort: {{ index .Values.kafka.ports 0 "targetPort" }}
+            - containerPort: {{ index .Values.kafka.ports 1 "targetPort" }}
+          env:
+{{- range $key, $value := .Values.kafka.env }}
+            - name: {{ $key }}
+              value: "{{ $value }}"
+{{- end }}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-kafka
+  labels:
+    app: kafka
+spec:
+  selector:
+    app: kafka
+  ports:
+    - protocol: TCP
+      port: {{ index .Values.kafka.ports 0 "targetPort" }}
+      targetPort: {{ index .Values.kafka.ports 0 "targetPort" }}
+      # nodePort: {{ index .Values.kafka.ports 0 "publishedPort" }}
+      name: port1 # Добавлено имя порта
+    - protocol: TCP
+      port: {{ index .Values.kafka.ports 1 "targetPort" }}
+      targetPort: {{ index .Values.kafka.ports 1 "targetPort" }}
+      name: port2 # Добавлено имя порта
+  type: NodePort

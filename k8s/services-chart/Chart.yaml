@@ -1,0 +1,26 @@
+apiVersion: v2
+name: services-chart
+version: 1.0.0
+type: application
+dependencies:
+  - name: service-chart
+    version: 1.0.0
+    alias: frontend
+  - name: service-chart
+    version: 1.0.0
+    alias: statistics
+  - name: service-chart
+    version: 1.0.0
+    alias: identity-provider
+  - name: service-chart
+    version: 1.0.0
+    alias: privileges
+  - name: service-chart
+    version: 1.0.0
+    alias: flights
+  - name: service-chart
+    version: 1.0.0
+    alias: tickets
+  - name: service-chart
+    version: 1.0.0
+    alias: gateway

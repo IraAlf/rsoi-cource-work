@@ -1,0 +1,115 @@
+///
+// COLORS
+/// 
+$colorBg: #F6F1F1;
+$colorBgAlt: #AFD3E2;
+$colorText: #000000;
+$colorTitle: #149bcc;
+$colorButton: #144b94;
+$colorAccent1: #5f6c11;
+$colorAccent2: #29AB26;
+$colorAccent3: #00a0d5;
+$colorAdd1: #C8A98C;
+$colorAdd2: #BA9B00;
+
+///
+// SHAPES
+/// 
+@mixin shape($width:default, $height:default, $border-radius: 10px) {
+    width: $width;
+    height: $height;
+    border-radius: $border-radius;
+    display: flex;
+    border: 1px solid;
+}
+
+@mixin round-box() {
+    @include shape();
+    border-color: $colorText;
+    background: inherit;
+}
+
+@mixin main-box() {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-around;
+}
+
+///
+// Text styles
+///
+@mixin text-headline($font-size: 66px, $color: $colorTitle, $align: left) {
+    font-family: 'Lora';
+    font-style: normal;
+    font-weight: bold;
+    line-height: 110%;
+
+    margin: 0;
+    font-size: $font-size;
+    color: $color;
+    text-align: $align;
+}
+
+@mixin text-header($font-size: 41px, $color: $colorTitle, $align: left) {
+    font-family: 'Lora';
+    font-style: normal;
+    font-weight: bold;
+    line-height: 140%;
+
+    margin: 0;
+    font-size: $font-size;
+    color: $color;
+    text-align: $align;
+}
+
+@mixin text-subtitle($font-size: 26px, $color: $colorTitle, $align: left) {
+    font-family: 'Lora';
+    font-style: normal;
+    font-weight: bold;
+    line-height: 140%;
+
+    margin: 0;
+    font-size: $font-size;
+    color: $color;
+    text-align: $align;
+}
+
+@mixin text-body($font-size: 16px, $color: $colorTitle, $align: left) {
+    font-family: 'Lora';
+    font-style: normal;
+    font-weight: bold;
+    line-height: 200%;
+
+    margin: 0;
+    font-size: $font-size;
+    color: $color;
+    text-align: $align;
+}
+
+@mixin text-altbody($font-size: 16px, $color: $colorTitle, $align: left) {
+    font-family: 'Lora';
+    font-style: normal;
+    font-weight: bold;
+    line-height: 20px;
+    letter-spacing: -0.045em;
+
+    margin: 0;
+    font-size: $font-size;
+    color: $color;
+    text-align: $align;
+}
+
+@mixin text-caption($font-size: 12px, $color: $colorTitle, $align: left) {
+    font-family: 'Lora';
+    font-style: normal;
+    font-weight: bold;
+    line-height: 200%;
+    text-transform: uppercase;
+
+    margin: 0;
+    font-size: $font-size;
+    color: $color;
+    text-align: $align;
+}

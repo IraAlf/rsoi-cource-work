@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Chart.Name }}
+  labels:
+    app.kubernetes.io/name: {{ .Chart.Name }}
+    app.kubernetes.io/version: "{{ .Values.service.image.version }}"
+    app.kubernetes.io/component: application
+    app.kubernetes.io/part-of: micro-services
+    app.kubernetes.io/managed-by: helm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Chart.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Chart.Name }}
+        app.kubernetes.io/name: {{ .Chart.Name }}
+        app.kubernetes.io/version: "{{ .Values.service.image.version }}"
+        app.kubernetes.io/component: application
+        app.kubernetes.io/part-of: micro-services
+        app.kubernetes.io/managed-by: helm
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          imagePullPolicy: Always
+          image: {{ .Values.service.image.name }}:{{ .Values.service.image.version }}
+          resources:
+            requests:
+              memory: "{{ .Values.service.resources.requests.memory }}"
+              cpu: "{{ .Values.service.resources.requests.cpu }}"
+            limits:
+              memory: "{{ .Values.service.resources.limits.memory }}"
+              cpu: "{{ .Values.service.resources.limits.cpu }}"
+          env:
+            {{ if .Values.service.database.name }}
+            - name: DATABASE
+              value: "{{ .Values.service.database.name }}"
+            {{- end }}
+            - name: DATABASE_HOST
+              value: "{{ .Values.service.database.host }}"
+            - name: DATABASE_PORT
+              value: "{{ .Values.service.database.port }}"
+            - name: DATABASE_USER
+              value: "{{ .Values.service.database.username }}"
+            - name: DATABAES_PASSWORD
+              value: "{{ .Values.service.database.password }}"
+          ports:
+            - name: web
+              containerPort: {{ .Values.service.port }}

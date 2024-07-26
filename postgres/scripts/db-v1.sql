@@ -1,0 +1,14 @@
+CREATE DATABASE tickets;
+GRANT ALL PRIVILEGES ON DATABASE tickets TO program;
+
+CREATE DATABASE flights;
+GRANT ALL PRIVILEGES ON DATABASE flights TO program;
+
+CREATE DATABASE privileges;
+GRANT ALL PRIVILEGES ON DATABASE privileges TO program;
+
+CREATE DATABASE staistics;
+GRANT ALL PRIVILEGES ON DATABASE loyalties TO program;
+
+CREATE DATABASE identity_provider;
+GRANT ALL PRIVILEGES ON DATABASE identity_provider TO program;

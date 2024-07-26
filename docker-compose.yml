@@ -1,0 +1,155 @@
+version: "3"
+services:
+  postgres-service:
+    image: library/postgres:13
+    container_name: postgres
+    restart: on-failure
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: "postgres"
+      POSTGRES_DB: postgres
+    volumes:
+      - db-data:/var/lib/postgresql/data
+      - ./postgres/:/docker-entrypoint-initdb.d/
+    ports:
+      - "5432:5432"
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.3.2
+    ports:
+      - '31000:31000'
+    depends_on:
+      - postgres-service
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2180
+      ZOOKEEPER_TICK_TIME: 2000
+      KAFKA_JMX_HOSTNAME: "localhost"
+      KAFKA_JMX_PORT: 31000
+
+  kafka:
+    image: confluentinc/cp-kafka:7.3.2
+    ports:
+      - '9092:9092'
+      - '31001:31001'
+    depends_on:
+      - zookeeper
+      - postgres-service
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2180
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+      # KAFKA_METRIC_REPORTERS: io.confluent.metrics.reporter.ConfluentMetricsReporter
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 100
+      # CONFLUENT_METRICS_REPORTER_BOOTSTRAP_SERVERS: kafka:29092
+      # CONFLUENT_METRICS_REPORTER_ZOOKEEPER_CONNECT: zookeeper:2181
+      # CONFLUENT_METRICS_REPORTER_TOPIC_REPLICAS: 1
+      # CONFLUENT_METRICS_ENABLE: 'false'
+      # CONFLUENT_SUPPORT_CUSTOMER_ID: 'anonymous'
+      KAFKA_JMX_HOSTNAME: "localhost"
+      KAFKA_JMX_PORT: 31001
+
+
+  # kafka-ui:
+  #   container_name: kafka-ui
+  #   image: provectuslabs/kafka-ui:latest
+  #   ports:
+  #     - 8090:8080
+  #   depends_on:
+  #     - kafka
+  #   environment:
+  #     DYNAMIC_CONFIG_ENABLED: true
+  #   volumes:
+  #     - ~/kui/config.yml:/etc/kafkaui/dynamic_config.yaml
+
+  statistics-service:
+    image: iraalf/statistics-service
+    build: 
+      context: src/statistics
+    ports:
+      - "8030:8030"
+    depends_on:
+      - kafka
+      - postgres-service
+    links: 
+      - postgres-service
+    restart: on-failure
+
+  identity-provider-service:
+    image: iraalf/identity-provider-service
+    build:
+      context: src/identity-provider
+      args:
+        OKTA_CLIENT_SECRET: "yVEFFGdhYe16oCGV2z1Z9lZCiRxfDtcU8dlvi0IrdXhklFIRJWksggqE67HxdsrL"
+        OKTA_SSWS_TOKEN: "00T26yt0uiknlKjQ65d7"
+    depends_on:
+      - kafka
+      - postgres-service
+    ports:
+      - "8040:8040"
+    restart: on-failure
+
+  privileges-service:
+    image: iraalf/privileges-service
+    build:
+      context: src/privileges
+    ports:
+      - "8050:8050"
+    depends_on:
+      - postgres-service
+    links: 
+      - postgres-service
+    restart: on-failure
+
+  flights-service:
+    image: iraalf/flights-service
+    build:
+      context: src/flights
+    ports:
+      - "8060:8060"
+    depends_on:
+      - postgres-service
+    links: 
+      - postgres-service
+    restart: on-failure
+  
+  tickets-service:
+    image: iraalf/tickets-service
+    build:
+      context: src/tickets
+    ports:
+      - "8070:8070"
+    depends_on:
+      - postgres-service
+    links: 
+      - postgres-service
+    restart: on-failure
+
+  gateway-service:
+    image: iraalf/gateway-service
+    build:
+      context: src/gateway
+    ports:
+      - "8080:8080"
+    depends_on:
+      - identity-provider-service
+      - flights-service
+      - privileges-service
+      - tickets-service
+    restart: on-failure
+
+  frontend-service:
+    image: iraalf/frontend-service
+    build:
+      context: src/frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - gateway-service
+    restart: on-failure
+
+volumes:
+  db-data:

@@ -1,0 +1,6 @@
+# Chart.yaml
+
+apiVersion: v2
+name: kafka
+version: 1.0.0
+description: Apache Kafka Helm Chart

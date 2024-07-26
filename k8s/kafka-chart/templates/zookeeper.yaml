@@ -1,0 +1,44 @@
+# templates/zookeeper.yaml
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-zookeeper
+  labels:
+    app: zookeeper
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: zookeeper
+  template:
+    metadata:
+      labels:
+        app: zookeeper
+    spec:
+      containers:
+        - name: zookeeper
+          image: {{ .Values.zookeeper.image }}
+          ports:
+            - containerPort: {{ index .Values.zookeeper.ports 0 "targetPort" }}
+          env:
+{{- range $key, $value := .Values.zookeeper.env }}
+            - name: {{ $key }}
+              value: "{{ $value }}"
+{{- end }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-zookeeper
+  labels:
+    app: zookeeper
+spec:
+  selector:
+    app: zookeeper
+  ports:
+    - protocol: TCP
+      port: {{ index .Values.zookeeper.ports 0 "targetPort" }}
+      targetPort: {{ index .Values.zookeeper.ports 0 "targetPort" }}
+      nodePort: {{ index .Values.zookeeper.ports 0 "publishedPort" }}
+  type: NodePort
