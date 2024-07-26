@@ -2,7 +2,7 @@ frontend:
   service:
     port: 3000
     image:
-      name: fairay/rsoi-lab5-frontend
+      name: iraalf/frontend-service
       version: latest
     ingress:
       enabled: true
@@ -12,19 +12,19 @@ statistics:
   service:
     port: 8030
     image:
-      name: fairay/rsoi-lab5-statistics
+      name: iraalf/statistics-service
       version: latest
 identity-provider:
   service:
     port: 8040
     image:
-      name: fairay/rsoi-lab5-identity-provider
+      name: iraalf/identity-provider-service
       version: latest
 privileges:
   service:
     port: 8050
     image:
-      name: fairay/rsoi-lab5-privileges
+      name: iraalf/privileges-service
       version: latest
     database:
       name: privileges
@@ -32,7 +32,7 @@ flights:
   service:
     port: 8060
     image:
-      name: fairay/rsoi-lab5-flights
+      name: iraalf/flights-service
       version: latest
     database:
       name: flights
@@ -40,7 +40,7 @@ tickets:
   service:
     port: 8070
     image:
-      name: fairay/rsoi-lab5-tickets
+      name: iraalf/tickets-service
       version: latest
     database:
       name: tickets
@@ -48,7 +48,7 @@ gateway:
   service:
     port: 8080
     image:
-      name: fairay/rsoi-lab5-gateway
+      name: iraalf/gateway-service
       version: latest
     ingress:
       enabled: true

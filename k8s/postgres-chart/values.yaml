@@ -17,6 +17,8 @@ datases:
     user: program
   - name: flights
     user: program
+  - name: identity_provider
+    user: program
 
 resources:
   requests:
