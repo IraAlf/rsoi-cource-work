@@ -19,6 +19,8 @@ datases:
     user: program
   - name: identity_provider
     user: program
+  - name: staistics
+    user: program
 
 resources:
   requests:
