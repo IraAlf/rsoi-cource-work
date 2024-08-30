@@ -40,9 +40,6 @@ jobs:
         run: cd src/identity-provider && go get -d ./... && go build ./...
 
       - name: Docker hub auth
-        with:
-          username: ${{ secrets.DOCKERHUB_LOGIN }}
-          password: ${{ secrets.DOCKERHUB_PASSWORD }}
         run: docker login -u IraAlf -p irishaALFEROVA18
 
       - name: Publish gateway image
