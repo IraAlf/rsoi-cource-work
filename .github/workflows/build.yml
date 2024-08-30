@@ -74,12 +74,19 @@ jobs:
             .
           docker push fairay/rsoi-lab5-identity-provider:latest
 
-      - name: Setup Kuber config
+      # - name: Setup Kuber config
+      #   run: |
+      #     kubectl config set-cluster rsoi-lab4 --server="${{secrets.K8S_HOST}}" --insecure-skip-tls-verify=true
+      #     kubectl config set-credentials github-actions --token="${{secrets.K8S_TOKEN}}"
+      #     kubectl config set-context default --cluster=rsoi-lab4 --user=github-actions
+      #     kubectl config use-context default
+      - name: Prepare Kube config
+        env:
+          KUBECONFIG_FILE: '${{ secrets.KUBECONFIG }}'
+          KUBECONFIG_CA_FILE: '${{ secrets.KUBECONFIG_CA }}'
         run: |
-          kubectl config set-cluster rsoi-lab4 --server="${{secrets.K8S_HOST}}" --insecure-skip-tls-verify=true
-          kubectl config set-credentials github-actions --token="${{secrets.K8S_TOKEN}}"
-          kubectl config set-context default --cluster=rsoi-lab4 --user=github-actions
-          kubectl config use-context default
+          echo "$KUBECONFIG_FILE" > ./kube.config
+          echo "$KUBECONFIG_CA_FILE" > ./ca.pem
 
       - name: Helm deploy
         run: |
