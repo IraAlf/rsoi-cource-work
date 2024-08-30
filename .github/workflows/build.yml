@@ -80,16 +80,7 @@ jobs:
       #     kubectl config use-context default
       - name: Prepare Kube config
         env:
-          KUBECONFIG_FILE: '${{ secrets.KUBECONFIG }}'
-          KUBECONFIG_CA_FILE: '${{ secrets.KUBECONFIG_CA }}'
-        run: |
-          
-          echo "$KUBECONFIG_FILE" > ./kube.config
-          echo "$KUBECONFIG_CA_FILE" > ./ca.pem
-          kubectl config view --raw > ~/.kube/config
-
-
-      - name: Helm deploy
+           KUBE_CONFIG_DATA: ${{ secrets.KUBECONFIG_FILE }}
         run: |
           cd k8s && helm upgrade --install services ./services-chart
           sleep 20
