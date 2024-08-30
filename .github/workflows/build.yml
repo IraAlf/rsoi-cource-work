@@ -73,13 +73,13 @@ jobs:
       #     docker push iraalf/identity-provider-service:latest
 
       - name: Setup Kuber config  
-      env:
+        env:
           OS_AUTH_URL: "https://infra.mail.ru:35357/v3/"
           OS_USERNAME: "irinaalferova13@mail.ru"
           OS_PASSWORD: "@PST7tH9b#~aAaB"
           OS_PROJECT_ID: "942cb64429484e35bf04b8eeb9ada51b"
           OS_DOMAIN_NAME: "users"
-      run: |
+        run: |
           kubectl config set-cluster kubernetes-cluster-7789 --server="https://185.241.194.199:6443" --insecure-skip-tls-verify=true
           kubectl config set-credentials kubernetes-cluster-7789 --exec-command=client-keystone-auth --exec-api-version=client.authentication.k8s.io/v1beta1 --exec-arg=--os-auth-url=$OS_AUTH_URL --exec-arg=--os-username=$OS_USERNAME --exec-arg=--os-password=$OS_PASSWORD --exec-arg=--os-project-id=$OS_PROJECT_ID --exec-arg=--os-domain-name=$OS_DOMAIN_NAME
           kubectl config set-context default --cluster=kubernetes-cluster-7789 --user=kubernetes-cluster-7789
