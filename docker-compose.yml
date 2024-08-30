@@ -82,9 +82,6 @@ services:
     image: iraalf/identity-provider-service
     build:
       context: src/identity-provider
-      args:
-        OKTA_CLIENT_SECRET: "yVEFFGdhYe16oCGV2z1Z9lZCiRxfDtcU8dlvi0IrdXhklFIRJWksggqE67HxdsrL"
-        OKTA_SSWS_TOKEN: "00T26yt0uiknlKjQ65d7"
     depends_on:
       - kafka
       - postgres-service
