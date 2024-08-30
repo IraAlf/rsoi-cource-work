@@ -72,10 +72,12 @@ jobs:
       #     docker build --no-cache -t iraalf/identity-provider-service .
       #     docker push iraalf/identity-provider-service:latest
 
-      - name: Setup Kuber config
+      - name: Setup Kuber config  
+        env:
+          CERTIFICATE: "${{secrets.VK_CERTIFICATE}}"
         run: |
           kubectl config set-cluster kubernetes-cluster-7789 --server="https://185.241.194.199:6443" --insecure-skip-tls-verify=true
-          kubectl config set-credentials github-actions --token=LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUM5VENDQWQyZ0F3SUJBZ0lSQUtZTEQ2WGhqa2wxZ2FDNXMxeFhTM1V3RFFZSktvWklodmNOQVFFTEJRQXcKSWpFZ01CNEdBMVVFQXd3WGEzVmlaWEp1WlhSbGN5MWpiSFZ6ZEdWeUxUYzNPRGt3SGhjTk1qUXdOekkzTVRZdwpNVEkzV2hjTk1qa3dOekkzTVRZd01USTNXakFpTVNBd0hnWURWUVFEREJkcmRXSmxjbTVsZEdWekxXTnNkWE4wClpYSXROemM0T1RDQ0FTSXdEUVlKS29aSWh2Y05BUUVCQlFBRGdnRVBBRENDQVFvQ2dnRUJBTWJBNXFTT1VQUWUKRmNNME5VMDF4MDI1aE5NbnBqWWZhZmhDdndzU054WGY0aVE5VDJZT0lpdHgyOEh6STUxMHpZTjNoRE9wcnB0MApTODV3QUdKT21sSmd6QnVBU3A5QW5lOURIRmI4NzZaeHBDY1FXbC9HNzhkbElnQ2htcmtjVEZxSDRsTXpWd3JICkhueE5qUnJlbjlJMjFNVVgzS3JJWEIyeVYrclBHeXRRd25vckVVWnZ6UmU5c1dxVG5Wc3FZMW5OektKYjRPV1gKemxzTkxSM2N2MTVZeWNNM250cmYxaFlBZGgwSnlaQmpYMXNENEJwalpZMWR1dTJ5VFZzNzV5NTFCa29zc1FNbApVTmhRa1BucVFzRGJPZXlnajlXNHhjSmovNUFzakxyeTUyVTBOZFZ3TWNlNHUxVjk4Tnd0eWdlSGdCM1FTOWw4CkNkQ3NIWm4xMDNzQ0F3RUFBYU1tTUNRd0VnWURWUjBUQVFIL0JBZ3dCZ0VCL3dJQkFEQU9CZ05WSFE4QkFmOEUKQkFNQ0FnUXdEUVlKS29aSWh2Y05BUUVMQlFBRGdnRUJBR1NRME1zVnRwd2gzdm5keHBpa0g5VUZ3aXVmZDdqaQpTNk8vS1BQZWZzWnNReDVJUkhoaWQ4dWhVL0hCYkpkbng5d2lVTlVKdTBPN1BFbFQ1OStiQzNOY1pEZ2lQcmlkClA3dnJES2NFT1RJazl3aFc4VTBPTktUNExQZW9ZU3IwVG85VlpqRkNiMVBjRlB1cHlkclhEakdEbmp6K21PZkQKQkVqTzFQTHVkZkhTR29qa0RVVURYV09XNHJzVHVnQnYyV21TQXBycXhrOGh4WndEUXNMMlZ5QUs2Q2xsRHdNSgo1WFNHcndBYXRTOFJBVmk0bXBheFl5a2ZsVUJheHlCRFpNbEpudm1CWXhPcXl4RVp6bUN2Tmd0SnR3bzFoKzZ2CmVoUjdFeWNTS1VQb043UldtQjZjTUc4S3N0SXd2akFzbXEzMUFzWW9tQWJDQWxkSGlESzh4VGs9Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K"
+          kubectl config set clusters.kubernetes-cluster-7789.certificate-authority-data $CERTIFICATE
           kubectl config set-context default --cluster=kubernetes-cluster-7789 --user=kubernetes-cluster-7789
           kubectl config use-context default
       - name: Prepare Kube config
