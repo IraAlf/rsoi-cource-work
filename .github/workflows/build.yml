@@ -80,12 +80,14 @@ jobs:
       #     kubectl config use-context default
       - name: Prepare Kube config
         env:
-           KUBE_CONFIG_DATA: ${{ secrets.KUBECONFIG_FILE }}
+           KUBECONFIG_FILE: ${{ secrets.KUBECONFIG_FILE }}
         run: |
-          export KUBECONFIG=./kubernetes-cluster-7789_kubeconfig.yaml
+         
 
           cd k8s && helm upgrade --install services ./services-chart
           sleep 20
+
+        # export KUBECONFIG=./kubernetes-cluster-7789_kubeconfig.yaml
 
       # - name: Run API Tests
       #   uses: matt-ball/newman-action@master
