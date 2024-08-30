@@ -77,7 +77,7 @@ jobs:
           CERTIFICATE: "${{secrets.VK_CERTIFICATE}}"
         run: |
           kubectl config set-cluster kubernetes-cluster-7789 --server="https://185.241.194.199:6443" --insecure-skip-tls-verify=true
-          kubectl config set clusters.kubernetes-cluster-7789.certificate-authority-data $CERTIFICATE
+          kubectl config set clusters.kubernetes-cluster-7789.certificate-authority-data $(echo $CERTIFICATE | base64 -i -)
           kubectl config set-context default --cluster=kubernetes-cluster-7789 --user=kubernetes-cluster-7789
           kubectl config use-context default
       - name: Prepare Kube config
