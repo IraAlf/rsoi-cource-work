@@ -86,8 +86,8 @@ jobs:
           
           echo "$KUBECONFIG_FILE" > ./kube.config
           echo "$KUBECONFIG_CA_FILE" > ./ca.pem
-          export KUBECONFIG=./kube.config
-          kubectl start
+          kubectl config view --raw > ~/.kube/config
+
 
       - name: Helm deploy
         run: |
