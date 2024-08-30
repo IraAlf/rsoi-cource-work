@@ -82,7 +82,7 @@ jobs:
         env:
            KUBE_CONFIG_DATA: ${{ secrets.KUBECONFIG_FILE }}
         run: |
-          export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
+          export KUBECONFIG=./kubernetes-cluster-7789_kubeconfig.yaml
 
           cd k8s && helm upgrade --install services ./services-chart
           sleep 20
