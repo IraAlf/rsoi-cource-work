@@ -49,7 +49,8 @@ jobs:
         run: |
           cd ./src/gateway
           docker build --no-cache -t iralf/gateway-service .
-          docker push iralf/gateway-service:latest
+          docker tag gateway-service iralf/gateway-service:version1
+          docker push iralf/gateway-service:version1
       - name: Publish flights image
         run: |
           cd ./src/flights
