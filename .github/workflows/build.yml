@@ -69,7 +69,7 @@ jobs:
       - name: Publish identity-provider image
         run: |
           cd ./src/identity-provider
-          docker build --no-cache -t iraalf/identity-provider-service
+          docker build --no-cache -t iraalf/identity-provider-service .
           docker push iraalf/identity-provider-service:latest
 
       # - name: Setup Kuber config
