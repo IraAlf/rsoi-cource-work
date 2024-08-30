@@ -41,7 +41,7 @@ jobs:
 
       - name: Docker Hub login
         env:
-          CRYANDEX_PASSWORD: y0_AgAAAAAZQKOHAATuwQAAAAD4cgz_-p5fJbT3SXWB0_omDHpuIxBw2YQ
+          CRYANDEX_PASSWORD: {{ secrets.CRYANDEX_PASSWORD }}
         run: echo "$CRYANDEX_PASSWORD" | docker login -u oauth --password-stdin cr.yandex
 
 
