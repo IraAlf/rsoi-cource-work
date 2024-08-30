@@ -27,13 +27,6 @@ spec:
         - name: {{ .Chart.Name }}
           imagePullPolicy: Always
           image: {{ .Values.service.image.name }}:{{ .Values.service.image.version }}
-          resources:
-            requests:
-              memory: "{{ .Values.service.resources.requests.memory }}"
-              cpu: "{{ .Values.service.resources.requests.cpu }}"
-            limits:
-              memory: "{{ .Values.service.resources.limits.memory }}"
-              cpu: "{{ .Values.service.resources.limits.cpu }}"
           env:
             {{ if .Values.service.database.name }}
             - name: DATABASE

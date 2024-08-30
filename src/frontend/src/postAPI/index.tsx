@@ -3,7 +3,7 @@ import { Flight } from "types/Flight";
 import { Account } from "types/Account";
 import axios from "axios";
 
-export const backUrl = "http://localhost:8080/api/v1";
+export const backUrl = "/api/v1";
 // export const backUrl = "http://gateway-service:8080/api/v1";
 
 const axiosBackend = () => {

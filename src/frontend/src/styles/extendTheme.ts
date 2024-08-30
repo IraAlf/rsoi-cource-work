@@ -2,30 +2,30 @@ import { extendTheme } from "@chakra-ui/react";
 
 const theme = extendTheme({
   colors: {
-    primary: "#d4503c",
-    "primary-dark": "#a52818",
-    secondary: "#eee5cf",
-    third: "#ddbc6d",
+    primary: "#4A6572", // Deep blue-grey
+    "primary-dark": "#344955", // Darker blue-grey
+    secondary: "#F0F4F8", // Light grey
+    third: "#E2E8F0", // Slightly darker grey
 
-    "bg": "#F6F1F1",
-    "bg-alt": "#D4CDC4",
-    "text": "#000000",
-    "title": "#9b4e23",
-    "button": "#d5a129",
-    "accent-1": "#5f6c11",
-    "accent-2": "#29AB26",
-    "accent-3": "#4D9699",
-    "add-1": "#C8A98C",
-    "add-2": "#BA9B00",
+    "bg": "#F8FAFC", // Very light grey
+    "bg-alt": "#E5E7EB", // Lighter grey
+    "text": "#2D3748", // Dark grey
+    "title": "#1A202C", // Darkest grey
+    "button": "#3182CE", // Blue
+    "accent-1": "#718096", // Light blue-grey
+    "accent-2": "#0EA5E9", // Blue
+    "accent-3": "#4299E1", // Light blue
+    "add-1": "#A0AEC0", // Light grey
+    "add-2": "#607D8B", // Dark grey
   },
   fonts: {
-    heading: "Unica One",
-    body: "Lora",
+    heading: "Poppins",
+    body: "Roboto",
   },
 
   textStyles : {
     headline: {
-      fontFamily: 'Lora',
+      fontFamily: 'Poppins',
       fontStyle: 'normal',
       fontWeight: 'bold',
       fontSize: '66px',
@@ -33,7 +33,7 @@ const theme = extendTheme({
     },
 
     header: {
-      fontFamily: 'Lora',
+      fontFamily: 'Poppins',
       fontStyle: 'normal',
       fontWeight: 'bold',
       fontSize: '41px',
@@ -41,7 +41,7 @@ const theme = extendTheme({
     },
 
     subtitle: {
-      fontFamily: 'Lora',
+      fontFamily: 'Poppins',
       fontStyle: 'normal',
       fontWeight: 'bold',
       fontSize: '26px',
@@ -49,26 +49,26 @@ const theme = extendTheme({
     },
 
     body: {
-      fontFamily: 'Lora',
+      fontFamily: 'Roboto',
       fontStyle: 'normal',
-      fontWeight: 'bold',
+      fontWeight: 'normal',
       fontSize: '16px',
       lineHeight: '200%',
     },
 
     'alt-body': {
-      fontFamily: 'Lora',
+      fontFamily: 'Roboto',
       fontStyle: 'normal',
-      fontWeight: 'bold',
+      fontWeight: 'normal',
       fontSize: '16px',
       lineHeight: '20px',
       letterSpacing: '-0.045em'
     },
 
     caption: {
-      fontFamily: 'Lora',
+      fontFamily: 'Roboto',
       fontStyle: 'normal',
-      fontWeight: 'bold',
+      fontWeight: 'normal',
       fontSize: '12px',
       lineHeight: '200%',
       textTransform: 'uppercase',
