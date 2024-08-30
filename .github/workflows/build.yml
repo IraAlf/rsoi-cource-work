@@ -39,40 +39,37 @@ jobs:
         if: ${{ steps.flags.outputs.RELEASE == 'true' }}
         run: cd src/identity-provider && go get -d ./... && go build ./...
 
-      - name: Docker hub auth
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKERHUB_LOGIN }}
-          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+      - name: Docker Hub login
+        env:
+          CRYANDEX_PASSWORD: y0_AgAAAAAZQKOHAATuwQAAAAD4cgz_-p5fJbT3SXWB0_omDHpuIxBw2YQ
+        run: echo "$CRYANDEX_PASSWORD" | docker login -u oauth --password-stdin cr.yandex
+
 
       - name: Publish gateway image
         run: |
           cd ./src/gateway
-          docker build --no-cache -t fairay/rsoi-lab5-gateway .
-          docker push fairay/rsoi-lab5-gateway:latest
+          docker build --no-cache -t iralf/gateway-service .
+          docker push iralf/gateway-service:latest
       - name: Publish flights image
         run: |
           cd ./src/flights
-          docker build --no-cache -t fairay/rsoi-lab5-flights .
-          docker push fairay/rsoi-lab5-flights:latest
+          docker build --no-cache -t iralf/flights-service .
+          docker push iralf/flights-service:latest
       - name: Publish tickets image
         run: |
           cd ./src/tickets
-          docker build --no-cache -t fairay/rsoi-lab5-tickets .
-          docker push fairay/rsoi-lab5-tickets:latest
+          docker build --no-cache -t iralf/tickets-service .
+          docker push iralf/tickets-service:latest
       - name: Publish privileges image
         run: |
           cd ./src/privileges
-          docker build --no-cache -t fairay/rsoi-lab5-privileges .
-          docker push fairay/rsoi-lab5-privileges:latest
+          docker build --no-cache -t iralf/privileges-service .
+          docker push iralf/privileges-service:latest
       - name: Publish identity-provider image
         run: |
           cd ./src/identity-provider
-          docker build --no-cache -t fairay/rsoi-lab5-identity-provider \
-            --build-arg OKTA_CLIENT_SECRET="${{secrets.OKTA_CLIENT_SECRET}}" \
-            --build-arg OKTA_SSWS_TOKEN="${{secrets.OKTA_SSWS_TOKEN}}" \
-            .
-          docker push fairay/rsoi-lab5-identity-provider:latest
+          docker build --no-cache -t iralf/identity-provider-service
+          docker push iralf/identity-provider-service:latest
 
       # - name: Setup Kuber config
       #   run: |
