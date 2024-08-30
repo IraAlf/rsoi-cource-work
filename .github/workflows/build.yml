@@ -48,29 +48,29 @@ jobs:
       - name: Publish gateway image
         run: |
           cd ./src/gateway
-          docker build --no-cache -t iralf/gateway-service .
-          docker tag iralf/gateway-service iralf/gateway-service:latest
-          docker push iralf/gateway-service:latest
+          docker build --no-cache -t iraalf/gateway-service .
+          docker tag iraalf/gateway-service iraalf/gateway-service:latest
+          docker push iraalf/gateway-service:latest
       - name: Publish flights image
         run: |
           cd ./src/flights
-          docker build --no-cache -t iralf/flights-service .
-          docker push iralf/flights-service:latest
+          docker build --no-cache -t iraalf/flights-service .
+          docker push iraalf/flights-service:latest
       - name: Publish tickets image
         run: |
           cd ./src/tickets
-          docker build --no-cache -t iralf/tickets-service .
-          docker push iralf/tickets-service:latest
+          docker build --no-cache -t iraalf/tickets-service .
+          docker push iraalf/tickets-service:latest
       - name: Publish privileges image
         run: |
           cd ./src/privileges
-          docker build --no-cache -t iralf/privileges-service .
-          docker push iralf/privileges-service:latest
+          docker build --no-cache -t iraalf/privileges-service .
+          docker push iraalf/privileges-service:latest
       - name: Publish identity-provider image
         run: |
           cd ./src/identity-provider
-          docker build --no-cache -t iralf/identity-provider-service
-          docker push iralf/identity-provider-service:latest
+          docker build --no-cache -t iraalf/identity-provider-service
+          docker push iraalf/identity-provider-service:latest
 
       # - name: Setup Kuber config
       #   run: |
