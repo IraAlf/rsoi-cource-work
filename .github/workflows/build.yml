@@ -39,11 +39,11 @@ jobs:
         if: ${{ steps.flags.outputs.RELEASE == 'true' }}
         run: cd src/identity-provider && go get -d ./... && go build ./...
 
-
-      - name: Docker Hub login
-        env:
-          CRYANDEX_PASSWORD: b2F1dGg6eTBfQWdBQUFBQVpRS09IQUFUdXdRQUFBQUQ0Y2d6Xy1wNWZKYlQzU1hXQjBfb21ESHB1SXhCdzJZUQ==
-        run: echo "$CRYANDEX_PASSWORD" | docker login -u oauth --password-stdin cr.yandex
+      - name: Docker hub auth
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_LOGIN }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
       - name: Publish gateway image
         run: |
