@@ -83,6 +83,7 @@ jobs:
           KUBECONFIG_FILE: '${{ secrets.KUBECONFIG }}'
           KUBECONFIG_CA_FILE: '${{ secrets.KUBECONFIG_CA }}'
         run: |
+          export KUBECONFIG=${{ secrets.KUBECONFIG }}'
           echo "$KUBECONFIG_FILE" > ./kube.config
           echo "$KUBECONFIG_CA_FILE" > ./ca.pem
 
