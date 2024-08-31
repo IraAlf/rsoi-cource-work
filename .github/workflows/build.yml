@@ -72,13 +72,16 @@ jobs:
       #     docker build --no-cache -t iraalf/identity-provider-service .
       #     docker push iraalf/identity-provider-service:latest
 
+
+
       - uses: actions-hub/kubectl@master
         env:
           KUBE_CONFIG: ${{ secrets.KUBECONFIG_FILE }}
 
-      - uses: actions-hub/kubectl@master
-        with:
-          args: get pods
+      - id: install-aws-cli
+        uses: unfor19/install-aws-cli-action@v1
+      - run: aws eks update-kubeconfig --region us-east-1 --name cluster1
+      - run: kubectl get pods
 
 
       - name: Prepare Kube config
