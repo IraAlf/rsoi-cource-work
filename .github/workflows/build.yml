@@ -74,9 +74,9 @@ jobs:
 
 
 
-      - uses: actions-hub/kubectl@master
-        env:
-          KUBE_CONFIG: ${{ secrets.KUBECONFIG_FILE }}
+      # - uses: actions-hub/kubectl@master
+      #   env:
+      #     KUBE_CONFIG: ${{ secrets.KUBECONFIG_FILE }}
 
       - id: install-aws-cli
         uses: unfor19/install-aws-cli-action@v1
