@@ -72,7 +72,6 @@ jobs:
       #     docker build --no-cache -t iraalf/identity-provider-service .
       #     docker push iraalf/identity-provider-service:latest
 
-      - name: Setup Kuber config  
       - uses: actions-hub/kubectl@master
         env:
           KUBE_CONFIG: ${{ secrets.KUBECONFIG_FILE }}
