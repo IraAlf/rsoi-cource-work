@@ -75,14 +75,15 @@ jobs:
 
 
       # - uses: actions-hub/kubectl@master
-      #   env:
-      #     KUBE_CONFIG: ${{ secrets.KUBECONFIG_FILE }}
 
-      - id: install-aws-cli
-        uses: unfor19/install-aws-cli-action@v1
-      - run: aws eks update-kubeconfig --region us-east-1 --name cluster1
-      - run: kubectl get pods
-
+   - name: kubeconfig 
+      env:
+    KUBE_CONFIG: ${{ secrets.KUBECONFIG_FILE }}
+      run: |
+        kubectl config set-cluster k8s --server="https://185.241.194.199:6443" --insecure-skip-tls-verify=true
+        kubectl config set-credentials kubernetes-cluster-7789 --certificate-authority-data="${{ secrets.auth }}"
+        kubectl config set-context default --cluster=kubernetes-cluster-7789 --user=kubernetes-cluster-7789
+        kubectl config use-context default
 
       - name: Prepare Kube config
         run: |
