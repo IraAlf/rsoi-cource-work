@@ -73,26 +73,11 @@ jobs:
       #     docker push iraalf/identity-provider-service:latest
 
       - name: Setup Kuber config  
-        env:
-          OS_AUTH_URL: "https://infra.mail.ru:35357/v3/"
-          OS_USERNAME: "irinaalferova13@mail.ru"
-          OS_PASSWORD: "@PST7tH9b#~aAaB"
-          OS_PROJECT_ID: "942cb64429484e35bf04b8eeb9ada51b"
-          OS_DOMAIN_NAME: "users"
-        run: |
-          echo "export OS_AUTH_URL=$OS_AUTH_URL" >> $GITHUB_ENV
-          echo "export OS_USERNAME=$OS_USERNAME" >> $GITHUB_ENV
-          echo "export OS_PASSWORD=$OS_PASSWORD" >> $GITHUB_ENV
-          echo "export OS_PROJECT_ID=$OS_PROJECT_ID" >> $GITHUB_ENV
-          echo "export OS_DOMAIN_NAME=$OS_DOMAIN_NAME" >> $GITHUB_ENV
-          openstack token issue
-
-      - name: Setup Kuber config
-        run: |
-          kubectl config set-cluster kubernetes-cluster-7789 --server="https://185.241.194.199:6443" --insecure-skip-tls-verify=true
-          kubectl config set-credentials kubernetes-cluster-7789 --token=$(openstack token issue -f value -c id)
-          kubectl config set-context default --cluster=kubernetes-cluster-7789 --user=kubernetes-cluster-7789
-          kubectl config use-context default
+        - uses: actions-hub/kubectl@master
+          env:
+            KUBE_CONFIG: ${{ secrets.KUBECONFIG_FILE }}
+          with:
+            args: get pods
 
 
       - name: Prepare Kube config
