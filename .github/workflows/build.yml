@@ -73,11 +73,11 @@ jobs:
       #     docker push iraalf/identity-provider-service:latest
 
       - name: Setup Kuber config  
-        - uses: actions-hub/kubectl@master
-          env:
-            KUBE_CONFIG: ${{ secrets.KUBECONFIG_FILE }}
-          with:
-            args: get pods
+      - uses: actions-hub/kubectl@master
+        env:
+          KUBE_CONFIG: ${{ secrets.KUBECONFIG_FILE }}
+        with:
+          args: get pods
 
 
       - name: Prepare Kube config
