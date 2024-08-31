@@ -76,9 +76,9 @@ jobs:
 
       # - uses: actions-hub/kubectl@master
 
-    - name: kubeconfig 
-      run: |
-        export KUBECONFIG=./kubernetes-cluster-7789_kubeconfig.yaml
+      - name: kubeconfig 
+        run: |
+          export KUBECONFIG=./kubernetes-cluster-7789_kubeconfig.yaml
       # run: |
       #   kubectl config set-cluster k8s --server="https://185.241.194.199:6443" --insecure-skip-tls-verify=true
       #   kubectl config set-credentials kubernetes-cluster-7789 --certificate-authority-data="${{ secrets.auth }}"
