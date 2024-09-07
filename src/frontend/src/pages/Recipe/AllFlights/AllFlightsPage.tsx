@@ -20,7 +20,6 @@ const AllFlightsPage: React.FC<AllRecipesProps> = (props) => {
 
   return (
     <Box className={styles.main_box}>
-      {/* <CategoryMap getCall={GetCategories}/> */}
       <RecipeMap searchQuery={searchContext.query} getCall={GetFlights}/>
     </Box>
   );

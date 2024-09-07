@@ -113,7 +113,7 @@ class FlightInfoPage extends React.Component<RecipeInfoParams, State> {
 
 
                         <RoundButton className={styles.buy_button} type="submit" onClick={event => this.submit(event)}>
-                            Забронировать билиет за {this.state.flight?.price}
+                            Забронировать билет за {this.state.flight?.price}
                         </RoundButton>
                     </Box>
                 }

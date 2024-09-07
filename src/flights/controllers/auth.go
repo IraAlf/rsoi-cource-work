@@ -95,6 +95,7 @@ func RetrieveToken(w http.ResponseWriter, r *http.Request) *Claims {
 var JwtAuthentication = func(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if token := RetrieveToken(w, r); token != nil {
+			log.Printf("Flights: token: %s ", token.Subject)
 			r.Header.Set("X-User-Name", token.Subject)
 			next.ServeHTTP(w, r)
 		}

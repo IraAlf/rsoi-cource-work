@@ -22,6 +22,12 @@ func InitPrivileges(r *mux.Router, privileges *models.PrivilegesM) {
 	r.HandleFunc("/privilege", ctrl.get).Methods("GET")
 	r.HandleFunc("/history", ctrl.addTicket).Methods("POST")
 	r.HandleFunc("/history/{ticketUid}", ctrl.deleteTicket).Methods("DELETE")
+	r.HandleFunc("/manage/health", ctrl.GetHealth).Methods("GET")
+}
+
+func (h *privilegesCtrl) GetHealth(w http.ResponseWriter, r *http.Request) {
+
+	w.WriteHeader(http.StatusOK)
 }
 
 func (ctrl *privilegesCtrl) post(w http.ResponseWriter, r *http.Request) {
@@ -43,7 +49,12 @@ func (ctrl *privilegesCtrl) post(w http.ResponseWriter, r *http.Request) {
 }
 
 func (ctrl *privilegesCtrl) get(w http.ResponseWriter, r *http.Request) {
-	username := r.Header.Get("X-User-Name")
+	token := RetrieveToken(w, r)
+	if token == nil {
+		log.Printf("failed to RetrieveToken:")
+		return
+	}
+	username := token.Subject
 
 	privilege, history, _ := ctrl.privileges.Find(username)
 
@@ -58,7 +69,12 @@ func (ctrl *privilegesCtrl) addTicket(w http.ResponseWriter, r *http.Request) {
 		responses.BadRequest(w, err.Error())
 		return
 	}
-	username := r.Header.Get("X-User-Name")
+	token := RetrieveToken(w, r)
+	if err != nil {
+		log.Printf("failed to RetrieveToken:")
+		return
+	}
+	username := token.Subject
 
 	data, err := ctrl.privileges.AddTicket(username, req_body)
 	switch err {
@@ -70,9 +86,14 @@ func (ctrl *privilegesCtrl) addTicket(w http.ResponseWriter, r *http.Request) {
 }
 
 func (ctrl *privilegesCtrl) deleteTicket(w http.ResponseWriter, r *http.Request) {
+	token := RetrieveToken(w, r)
+	if token == nil {
+		log.Printf("failed to RetrieveToken: ")
+		return
+	}
 	urlParams := mux.Vars(r)
 	ticket_uid := urlParams["ticketUid"]
-	username := r.Header.Get("X-User-Name")
+	username := token.Subject
 
 	err := ctrl.privileges.DeleteTicket(username, ticket_uid)
 	switch err {

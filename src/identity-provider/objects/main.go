@@ -26,6 +26,7 @@ type AuthRequest struct {
 type AuthResponse struct {
 	ExpiresIn   int    `json:"expires_in"`
 	AccessToken string `json:"access_token"`
+	Role        string `json:"role"`
 }
 
 type UserCreateRequest struct {

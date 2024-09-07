@@ -15,8 +15,9 @@ export const Login = async function (data: AuthRequest): Promise<resp> {
 
   if (response.status === 200) {
     localStorage.setItem("authToken", response.data.access_token);
-  //  localStorage.setItem("role", response.data.role);
-  localStorage.setItem("role", "user");
+    console.log(response.data.role)
+    localStorage.setItem("role", response.data.role);
+  //localStorage.setItem("role", "user");
 
   }
 

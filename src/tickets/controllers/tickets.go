@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"encoding/json"
+	"log"
 	"tickets/controllers/responses"
 	"tickets/errors"
 	"tickets/models"
@@ -22,18 +23,33 @@ func InitTickets(r *mux.Router, model *models.TicketsM) {
 	r.HandleFunc("/tickets", ctrl.create).Methods("POST")
 	r.HandleFunc("/tickets/{ticketUid}", ctrl.get).Methods("GET")
 	r.HandleFunc("/tickets/{ticketUid}", ctrl.delete).Methods("DELETE")
+	r.HandleFunc("/manage/health", ctrl.GetHealth).Methods("GET")
+}
+
+func (h *filghtCtrl) GetHealth(w http.ResponseWriter, r *http.Request) {
+
+	w.WriteHeader(http.StatusOK)
 }
 
 func (ctrl *filghtCtrl) fetch(w http.ResponseWriter, r *http.Request) {
-	data := ctrl.model.Fetch(r.Header.Get("X-User-Name"))
+	token := RetrieveToken(w, r)
+	if token == nil {
+		log.Printf("failed to RetrieveToken")
+		return
+	}
+	data := ctrl.model.Fetch(token.Subject)
 	responses.JsonSuccess(w, data)
 }
 
 func (ctrl *filghtCtrl) create(w http.ResponseWriter, r *http.Request) {
 	req_body := new(objects.CreateRequest)
 	json.NewDecoder(r.Body).Decode(req_body)
-
-	ticket, _ := ctrl.model.Create(r.Header.Get("X-User-Name"), req_body.FlightNumber, req_body.Price)
+	token := RetrieveToken(w, r)
+	if token == nil {
+		log.Printf("failed to RetrieveToken")
+		return
+	}
+	ticket, _ := ctrl.model.Create(token.Subject, req_body.FlightNumber, req_body.Price)
 	responses.JsonSuccess(w, ticket)
 }
 
@@ -55,6 +71,8 @@ func (ctrl *filghtCtrl) get(w http.ResponseWriter, r *http.Request) {
 func (ctrl *filghtCtrl) delete(w http.ResponseWriter, r *http.Request) {
 	urlParams := mux.Vars(r)
 	ticket_uid := urlParams["ticketUid"]
+
+	log.Printf("ticket_uid tickets", ticket_uid)
 
 	switch ctrl.model.Delete(ticket_uid) {
 	case nil:

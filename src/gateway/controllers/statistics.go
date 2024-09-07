@@ -22,10 +22,16 @@ func InitStatistics(r *mux.Router, statistics *models.StatisticsM) {
 }
 
 func (ctrl *statisticsCtrl) fetch(w http.ResponseWriter, r *http.Request) {
-	// if role := r.Header.Get("X-User-Role"); role != "admin" {
-	// 	responses.ForbiddenMsg(w, fmt.Sprintf("not allowed for %s role", role))
-	// 	return
-	// }
+	token, err := RetrieveToken(w, r)
+	if err != nil {
+		log.Printf("failed to RetrieveToken: %s", err.Error())
+		return
+	}
+
+	if token.Role != "admin" {
+		responses.ForbiddenMsg(w, fmt.Sprintf("not allowed for %s role", token.Role))
+		return
+	}
 
 	queryParams := r.URL.Query()
 	log.Println(queryParams.Get("begin_time"))

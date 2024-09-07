@@ -39,7 +39,7 @@ const Home: React.FC<HomeProps> = () => {
 function Routing() {
   return <BrowserRouter>
     <Routes>
-      <Route path="/" element={<AllFlightsPage />} />
+      <Route path="/" element={<Login />} />
       <Route path="/auth/signin" element={<Login />} />
       <Route path="/auth/signup" element={<SignUp />} />
       <Route path="/flights/:flightNumber" element={<FlightInfoPage />} />
@@ -47,12 +47,7 @@ function Routing() {
       <Route path="/statistics" element={<StatisticsPage />} />
       <Route path="/flights" element={<AllFlightsPage />} />
 
-      {/* <Route path="/me/likes" element={<LikedRecipesPage />} />
-      <Route path="/me/recipes" element={<AuthorRecipesPage />} />
-      <Route path="/accounts/:login/recipes" element={<AuthorRecipesPage />} />
-      <Route path="/accounts/:login/likes" element={<LikedRecipesPage />} />
-      <Route path="/categories/:title" element={<CategoryPage />} />
-      <Route path="/users" element={<UsersPage />} /> */}
+
 
       <Route path="*" element={<NotFound />} />
     </Routes>

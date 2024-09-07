@@ -35,7 +35,7 @@ class LoginPage extends React.Component<LoginProps> {
         LoginQuery(this.acc).then(data => {
             button.disabled = false
             if (data.status === 200) {
-                window.location.href = '/';
+                window.location.href = '/flights';
             } else {
                 var title = document.getElementById("undertitle")
                 if (title)

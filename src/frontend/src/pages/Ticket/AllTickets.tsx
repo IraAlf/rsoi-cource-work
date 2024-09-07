@@ -94,6 +94,7 @@ const AllTicketsPage = () => {
         let profile = response.data;
         setTickets(profile.tickets);
         setPrivilege(profile.privilege);
+        console.log(tickets)
     };
 
     return (

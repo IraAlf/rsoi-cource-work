@@ -3,7 +3,6 @@ package controllers
 import (
 	"fmt"
 	"net/http"
-	"statistics/controllers/responses"
 	"statistics/models"
 	"statistics/objects"
 	"statistics/utils"
@@ -22,16 +21,9 @@ func initControllers(r *mux.Router, models *models.Models) {
 	r.Use(utils.LogHandler)
 
 	api1_r := r.PathPrefix("/api/v1/").Subrouter()
-	api1_r.Use(JwtAuthentication)
 
 	ctrl := &requestCtrl{models.Statistics}
 	api1_r.HandleFunc("/requests", ctrl.fetch).Methods("GET")
-	api1_r.HandleFunc("/manage/health", ctrl.GetHealth).Methods("GET")
-}
-
-func (h *requestCtrl) GetHealth(w http.ResponseWriter, r *http.Request) {
-
-	w.WriteHeader(http.StatusOK)
 }
 
 func InitRouter(db *gorm.DB) *mux.Router {
@@ -66,5 +58,5 @@ func (ctrl *requestCtrl) fetch(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "failed to fetch statistics", http.StatusInternalServerError)
 		return
 	}
-	responses.JsonSuccess(w, &objects.FetchResponse{Reqests: requests})
+	JsonSuccess(w, &objects.FetchResponse{Reqests: requests})
 }

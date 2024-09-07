@@ -5,6 +5,7 @@ import (
 	"gateway/errors"
 	"gateway/models"
 	"gateway/objects"
+	"log"
 
 	"encoding/json"
 	"net/http"
@@ -60,10 +61,17 @@ func (ctrl *ticketsCtrl) post(w http.ResponseWriter, r *http.Request) {
 }
 
 func (ctrl *ticketsCtrl) get(w http.ResponseWriter, r *http.Request) {
+	token, err := RetrieveToken(w, r)
+	if err != nil {
+		log.Printf("failed to RetrieveToken: %s", err.Error())
+		return
+	}
+
 	urlParams := mux.Vars(r)
 	ticket_uid := urlParams["ticketUid"]
 	authHeader := r.Header.Get("Authorization")
-	username := r.Header.Get("X-User-Name")
+	username := token.Subject
+	log.Printf("username: ", username)
 
 	data, err := ctrl.tickets.Find(ticket_uid, username, authHeader)
 	switch err {
@@ -77,13 +85,23 @@ func (ctrl *ticketsCtrl) get(w http.ResponseWriter, r *http.Request) {
 }
 
 func (ctrl *ticketsCtrl) delete(w http.ResponseWriter, r *http.Request) {
+	token, err := RetrieveToken(w, r)
+	if err != nil {
+		log.Printf("failed to RetrieveToken: %s", err.Error())
+		return
+	}
 
 	urlParams := mux.Vars(r)
 	ticket_uid := urlParams["ticketUid"]
 	authHeader := r.Header.Get("Authorization")
-	username := r.Header.Get("X-User-Name")
+	username := token.Subject
+	log.Printf("username: ", username)
 
-	err := ctrl.tickets.Delete(ticket_uid, username, authHeader)
+	log.Printf("ticket_uid: ", ticket_uid)
+	log.Printf("authHeader: ", authHeader)
+	log.Printf("username: ", username)
+
+	err = ctrl.tickets.Delete(ticket_uid, username, authHeader)
 	switch err {
 	case nil:
 		responses.SuccessTicketDeletion(w)

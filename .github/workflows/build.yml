@@ -23,64 +23,64 @@ jobs:
           RELEASE="false"
           echo "::set-output name=RELEASE::$RELEASE"
 
-      # - name: Build gateway
-      #   if: ${{ steps.flags.outputs.RELEASE == 'true' }}
-      #   run: cd src/gateway && go get -d ./... && go build ./...
-      # - name: Build flights
-      #   if: ${{ steps.flags.outputs.RELEASE == 'true' }}
-      #   run: cd src/flights && go get -d ./... && go build ./...
-      # - name: Build tickets
-      #   if: ${{ steps.flags.outputs.RELEASE == 'true' }}
-      #   run: cd src/tickets && go get -d ./... && go build ./...
-      # - name: Build privileges
-      #   if: ${{ steps.flags.outputs.RELEASE == 'true' }}
-      #   run: cd src/privileges && go get -d ./... && go build ./...
-      # - name: Build identity provider
-      #   if: ${{ steps.flags.outputs.RELEASE == 'true' }}
-      #   run: cd src/identity-provider && go get -d ./... && go build ./...
+      - name: Build gateway
+        if: ${{ steps.flags.outputs.RELEASE == 'true' }}
+        run: cd src/gateway && go get -d ./... && go build ./...
+      - name: Build flights
+        if: ${{ steps.flags.outputs.RELEASE == 'true' }}
+        run: cd src/flights && go get -d ./... && go build ./...
+      - name: Build tickets
+        if: ${{ steps.flags.outputs.RELEASE == 'true' }}
+        run: cd src/tickets && go get -d ./... && go build ./...
+      - name: Build privileges
+        if: ${{ steps.flags.outputs.RELEASE == 'true' }}
+        run: cd src/privileges && go get -d ./... && go build ./...
+      - name: Build identity provider
+        if: ${{ steps.flags.outputs.RELEASE == 'true' }}
+        run: cd src/identity-provider && go get -d ./... && go build ./...
 
-      # - name: Docker hub auth
-      #   run: docker login -u "iraalf" -p "gfERytg+X6R;zC9" docker.io
-      #   # with:
-      #   #   username: ${{ secrets.DOCKERHUB_LOGIN }}
-      #   #   password: ${{ secrets.DOCKERHUB_PASSWORD }}
+      - name: Docker hub auth
+        run: docker login -u "iraalf" -p "gfERytg+X6R;zC9" docker.io
+        # with:
+        #   username: ${{ secrets.DOCKERHUB_LOGIN }}
+        #   password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
-      # - name: Publish gateway image
-      #   run: |
-      #     cd ./src/gateway
-      #     docker build --no-cache -t iraalf/gateway-service .
-      #     docker tag iraalf/gateway-service iraalf/gateway-service:latest
-      #     docker push iraalf/gateway-service:latest
-      # - name: Publish flights image
-      #   run: |
-      #     cd ./src/flights
-      #     docker build --no-cache -t iraalf/flights-service .
-      #     docker push iraalf/flights-service:latest
-      # - name: Publish tickets image
-      #   run: |
-      #     cd ./src/tickets
-      #     docker build --no-cache -t iraalf/tickets-service .
-      #     docker push iraalf/tickets-service:latest
-      # - name: Publish privileges image
-      #   run: |
-      #     cd ./src/privileges
-      #     docker build --no-cache -t iraalf/privileges-service .
-      #     docker push iraalf/privileges-service:latest
-      # - name: Publish identity-provider image
-      #   run: |
-      #     cd ./src/identity-provider
-      #     docker build --no-cache -t iraalf/identity-provider-service .
-      #     docker push iraalf/identity-provider-service:latest
+      - name: Publish gateway image
+        run: |
+          cd ./src/gateway
+          docker build --no-cache -t iraalf/gateway-service .
+          docker tag iraalf/gateway-service iraalf/gateway-service:latest
+          docker push iraalf/gateway-service:latest
+      - name: Publish flights image
+        run: |
+          cd ./src/flights
+          docker build --no-cache -t iraalf/flights-service .
+          docker push iraalf/flights-service:latest
+      - name: Publish tickets image
+        run: |
+          cd ./src/tickets
+          docker build --no-cache -t iraalf/tickets-service .
+          docker push iraalf/tickets-service:latest
+      - name: Publish privileges image
+        run: |
+          cd ./src/privileges
+          docker build --no-cache -t iraalf/privileges-service .
+          docker push iraalf/privileges-service:latest
+      - name: Publish identity-provider image
+        run: |
+          cd ./src/identity-provider
+          docker build --no-cache -t iraalf/identity-provider-service .
+          docker push iraalf/identity-provider-service:latest
 
 
 
       # - uses: actions-hub/kubectl@master
 
-      - name: kubeconfig 
-        run: |
-          export KUBECONFIG=./kubernetes-cluster-7789_kubeconfig.yaml
-          cd k8s && helm upgrade --install services ./services-chart
-          sleep 20
+      # - name: kubeconfig 
+      #   run: |
+      #     export KUBECONFIG=./kubernetes-cluster-7789_kubeconfig.yaml
+      #     cd k8s && helm upgrade --install services ./services-chart
+      #     sleep 20
       # run: |
       #   kubectl config set-cluster k8s --server="https://185.241.194.199:6443" --insecure-skip-tls-verify=true
       #   kubectl config set-credentials kubernetes-cluster-7789 --certificate-authority-data="${{ secrets.auth }}"

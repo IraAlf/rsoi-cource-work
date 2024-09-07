@@ -34,13 +34,21 @@ func initDBConnection(cnf utils.DBConfiguration) *gorm.DB {
 	flight := &objects.Flight{
 		Id:           1,
 		FlightNumber: "AFL031",
-		Datetime:     "2021-10-08 20:00",
+		Datetime:     "2024-10-08 20:00",
 		FromAirport:  objects.Airport{Id: 2, Name: "Пулково", City: "Санкт-Петербург", Country: "Россия"},
 		ToAirport:    objects.Airport{Id: 1, Name: "Шереметьево", City: "Москва", Country: "Россия"},
-		Price:        1500,
+		Price:        6000,
 	}
 	db.FirstOrCreate(flight)
-
+	flight = &objects.Flight{
+		Id:           1,
+		FlightNumber: "BGH789",
+		Datetime:     "2024-13-08 12:45",
+		FromAirport:  objects.Airport{Id: 2, Name: "Пулково", City: "Санкт-Петербург", Country: "Россия"},
+		ToAirport:    objects.Airport{Id: 1, Name: "Домодедово", City: "Москва", Country: "Россия"},
+		Price:        3000,
+	}
+	db.Create(flight)
 	return db
 }
 

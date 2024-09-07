@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"encoding/json"
+	"fmt"
 	"identity-provider/controllers/responses"
 	"identity-provider/models"
 	"identity-provider/objects"
@@ -35,6 +36,12 @@ func InitAuth(r *mux.Router, auth *models.UserModel) {
 	ctrl := &auhtCtrl{auth}
 	r.HandleFunc("/register", ctrl.register).Methods("POST")
 	r.HandleFunc("/authorize", ctrl.authorize).Methods("POST")
+	r.HandleFunc("/manage/health", ctrl.GetHealth).Methods("GET")
+}
+
+func (h *auhtCtrl) GetHealth(w http.ResponseWriter, r *http.Request) {
+
+	w.WriteHeader(http.StatusOK)
 }
 
 type Token struct {
@@ -136,6 +143,8 @@ func (ctrl *auhtCtrl) authorize(w http.ResponseWriter, r *http.Request) {
 		},
 	}
 
+	fmt.Println("userFromDb.UserType %s", userFromDb.UserType)
+
 	// Declare the token with the algorithm used for signing, and the claims
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	// Add 'kid' to the token header
@@ -154,6 +163,7 @@ func (ctrl *auhtCtrl) authorize(w http.ResponseWriter, r *http.Request) {
 	response := &objects.AuthResponse{
 		ExpiresIn:   int(expirationTime.Unix()),
 		AccessToken: tokenString,
+		Role:        userFromDb.UserType,
 	}
 
 	log.Printf("Identity-provider: token: %s ", response.AccessToken)

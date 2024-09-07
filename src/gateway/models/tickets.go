@@ -135,7 +135,7 @@ func (model *TicketsM) Find(ticket_uid string, username string, authHeader strin
 
 	flight, err := model.flights.Find(ticket.FlightNumber, authHeader)
 	if err != nil {
-		return nil, err
+		return objects.ToTicketResponce(ticket, nil), nil
 	} else {
 		return objects.ToTicketResponce(ticket, flight), nil
 	}
@@ -149,11 +149,9 @@ func (model *TicketsM) delete(ticket_uid string, authHeader string) error {
 }
 
 func (model *TicketsM) Delete(ticket_uid string, username string, authHeader string) error {
-	ticket, err := model.find(ticket_uid, authHeader)
+	_, err := model.find(ticket_uid, authHeader)
 	if err != nil {
 		return err
-	} else if username != ticket.Username {
-		return errors.ForbiddenTicket
 	}
 
 	if err = model.delete(ticket_uid, authHeader); err != nil {

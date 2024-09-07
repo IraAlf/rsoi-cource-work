@@ -2,6 +2,7 @@ package objects
 
 import (
 	_ "encoding/json"
+	"fmt"
 )
 
 type TicketPurchaseRequest struct {
@@ -94,13 +95,25 @@ func MakeTicketResponseArr(tickets []Ticket, flights []FlightResponse) []TicketR
 }
 
 func ToTicketResponce(ticket *Ticket, flight *FlightResponse) *TicketResponse {
-	return &TicketResponse{
-		TicketUid:    ticket.TicketUid,
-		FlightNumber: ticket.FlightNumber,
-		FromAirport:  flight.FromAirport,
-		ToAirport:    flight.ToAirport,
-		Date:         flight.Date,
-		Price:        flight.Price,
-		Status:       ticket.Status,
+	if flight != nil {
+		return &TicketResponse{
+			TicketUid:    ticket.TicketUid,
+			FlightNumber: ticket.FlightNumber,
+			FromAirport:  flight.FromAirport,
+			ToAirport:    flight.ToAirport,
+			Date:         flight.Date,
+			Price:        ticket.Price,
+			Status:       ticket.Status,
+		}
+	} else {
+		return &TicketResponse{
+			TicketUid:    ticket.TicketUid,
+			FlightNumber: ticket.FlightNumber,
+			FromAirport:  fmt.Sprintf("%s %s", "None", "None"),
+			ToAirport:    fmt.Sprintf("%s %s", "None", "None"),
+			Date:         "01-01-1970",
+			Price:        ticket.Price,
+			Status:       ticket.Status,
+		}
 	}
 }

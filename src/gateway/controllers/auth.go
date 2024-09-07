@@ -192,6 +192,7 @@ func (ctrl *authCtrl) authorize(w http.ResponseWriter, r *http.Request) {
 		data := &objects.AuthResponse{}
 		body, _ := ioutil.ReadAll(resp.Body)
 		json.Unmarshal(body, data)
+		fmt.Println("USERTYPE\n\n\n %s", data.Role)
 		responses.JsonSuccess(w, data)
 	} else {
 		responses.BadRequest(w, "auth failed")

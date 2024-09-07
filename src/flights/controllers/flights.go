@@ -21,6 +21,12 @@ func InitFlights(r *mux.Router, model *models.FlightsM) {
 	ctrl := &flightCtrl{model}
 	r.HandleFunc("/flights", ctrl.getAll).Methods("GET")
 	r.HandleFunc("/flights/{flightNumber}", ctrl.get).Methods("GET")
+	r.HandleFunc("/flights/manage/health", ctrl.GetHealth).Methods("GET")
+}
+
+func (ctrl *flightCtrl) GetHealth(w http.ResponseWriter, r *http.Request) {
+
+	w.WriteHeader(http.StatusOK)
 }
 
 func (ctrl *flightCtrl) getAll(w http.ResponseWriter, r *http.Request) {
